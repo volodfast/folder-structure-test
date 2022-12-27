@@ -31,13 +31,13 @@ const FileExplorer = () => {
   }, [setIsLoading, setError, setFolder]);
 
   return (
-    <div>
+    <div style={{ width: 400, textAlign: "left" }}>
       {isLoading && <div>Loading...</div>}
       {error && <div>Error: {error}</div>}
       {folder && (
         <>
           <div>{`Inside root folder - ${folder.name}`}</div>
-          <Folder data={folder} />
+          <Folder data={folder} initialIsOpen />
         </>
       )}
     </div>
