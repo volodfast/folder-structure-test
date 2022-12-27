@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 // components
 import File from "src/modules/explorer/components/File";
 import Folder from "src/modules/explorer/components/Folder";

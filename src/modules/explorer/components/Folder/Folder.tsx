@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 // components
 import Icon from "src/modules/core/components/Icon";
@@ -16,12 +16,7 @@ const Folder: FC<FolderProps> = (props) => {
 
   const [isOpen, setIsOpen] = useState(initialIsOpen);
 
-  const { service, moveFileOption } = useExplorer();
-
-  // const moveFile = useCallback((item: unknown) => {
-  //   console.log("move file option", item);
-  //   console.log("to folder: ", data.name);
-  // }, []);
+  const { checkIfCanMove, moveFileOption } = useExplorer();
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: DnDTypes.FOLDER,
@@ -45,12 +40,8 @@ const Folder: FC<FolderProps> = (props) => {
 
       moveFileOption(item.id, data.id);
     },
-    canDrop: (item, monitor) => {
-      if (service) {
-        return service?.checkIfCanMove(item.id, data.id);
-      }
-
-      return false;
+    canDrop: (item) => {
+      return checkIfCanMove(item.id, data.id);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver({ shallow: true }),

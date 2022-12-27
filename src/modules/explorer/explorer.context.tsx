@@ -7,23 +7,26 @@ import {
   useEffect,
   useState,
 } from "react";
+// api
 import { ExplorerApi } from "./explorer.api";
-import { IFolder } from "./explorer.interfaces";
+// services
 import { ExplorerService } from "./explorer.service";
+// interfaces
+import { IFolder } from "./explorer.interfaces";
 
 type IExplorerContext = {
   folder: IFolder | null;
   isLoading: boolean;
-  service: ExplorerService | null;
   error: string | null;
+  checkIfCanMove: (id: string, idTo: string) => boolean;
   moveFileOption: (id: string, idTo: string) => void;
 };
 
 const ExplorerContext = createContext<IExplorerContext>({
   folder: null,
   isLoading: false,
-  service: null,
   error: null,
+  checkIfCanMove: () => false,
   moveFileOption: () => {},
 });
 
@@ -44,10 +47,15 @@ export const ExplorerContextProvider: FC<{ children: ReactNode }> = ({
       const newFolder = service.moveOption(idToMove, idTo);
 
       setFolder(newFolder);
-
-      console.log(newFolder);
     },
     [setFolder, service]
+  );
+
+  const checkIfCanMove = useCallback(
+    (id: string, idTo: string) => {
+      return service!.checkIfCanMove(id, idTo);
+    },
+    [service]
   );
 
   useEffect(() => {
@@ -59,7 +67,7 @@ export const ExplorerContextProvider: FC<{ children: ReactNode }> = ({
         const folderData = await explorerService.fetchRoot();
 
         setIsLoading(false);
-        setFolder({ ...folderData });
+        setFolder(folderData);
         setService(explorerService);
       } catch (err) {
         setError(String(err));
@@ -74,10 +82,10 @@ export const ExplorerContextProvider: FC<{ children: ReactNode }> = ({
     <ExplorerContext.Provider
       value={{
         isLoading,
-        service,
         folder,
         error,
         moveFileOption,
+        checkIfCanMove,
       }}
     >
       {children}
