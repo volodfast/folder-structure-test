@@ -2,6 +2,7 @@ import {
   createContext,
   FC,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -15,6 +16,7 @@ type IExplorerContext = {
   isLoading: boolean;
   service: ExplorerService | null;
   error: string | null;
+  moveFileOption: (id: string, idTo: string) => void;
 };
 
 const ExplorerContext = createContext<IExplorerContext>({
@@ -22,6 +24,7 @@ const ExplorerContext = createContext<IExplorerContext>({
   isLoading: false,
   service: null,
   error: null,
+  moveFileOption: () => {},
 });
 
 export const ExplorerContextProvider: FC<{ children: ReactNode }> = ({
@@ -32,6 +35,21 @@ export const ExplorerContextProvider: FC<{ children: ReactNode }> = ({
   const [folder, setFolder] = useState<null | IFolder>(null);
   const [service, setService] = useState<null | ExplorerService>(null);
 
+  const moveFileOption = useCallback(
+    (idToMove: string, idTo: string) => {
+      if (!service) {
+        return;
+      }
+
+      const newFolder = service.moveOption(idToMove, idTo);
+
+      setFolder(newFolder);
+
+      console.log(newFolder);
+    },
+    [setFolder, service]
+  );
+
   useEffect(() => {
     async function fetchRootFolder() {
       try {
@@ -41,7 +59,7 @@ export const ExplorerContextProvider: FC<{ children: ReactNode }> = ({
         const folderData = await explorerService.fetchRoot();
 
         setIsLoading(false);
-        setFolder(folderData);
+        setFolder({ ...folderData });
         setService(explorerService);
       } catch (err) {
         setError(String(err));
@@ -59,6 +77,7 @@ export const ExplorerContextProvider: FC<{ children: ReactNode }> = ({
         service,
         folder,
         error,
+        moveFileOption,
       }}
     >
       {children}

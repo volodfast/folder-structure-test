@@ -16,12 +16,12 @@ const Folder: FC<FolderProps> = (props) => {
 
   const [isOpen, setIsOpen] = useState(initialIsOpen);
 
-  const { service } = useExplorer();
+  const { service, moveFileOption } = useExplorer();
 
-  const moveFileOption = useCallback((item: unknown) => {
-    console.log("move file option", item);
-    console.log("to folder: ", data.name);
-  }, []);
+  // const moveFile = useCallback((item: unknown) => {
+  //   console.log("move file option", item);
+  //   console.log("to folder: ", data.name);
+  // }, []);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: DnDTypes.FOLDER,
@@ -43,7 +43,7 @@ const Folder: FC<FolderProps> = (props) => {
         return;
       }
 
-      moveFileOption(item);
+      moveFileOption(item.id, data.id);
     },
     canDrop: (item, monitor) => {
       if (service) {
