@@ -1,7 +1,6 @@
 import { FC } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder } from "@fortawesome/free-solid-svg-icons";
 // components
+import Icon from "src/modules/core/components/Icon";
 import FileOption from "src/modules/explorer/components/FileOption";
 // interfaces
 import { FolderProps } from "./Folder.interfaces";
@@ -13,7 +12,7 @@ const Folder: FC<FolderProps> = (props) => {
     <div>
       <div>
         <span>
-          <FontAwesomeIcon icon={faFolder} />
+          <Icon type="folder" />
         </span>
         <span> {data.name}</span>
       </div>

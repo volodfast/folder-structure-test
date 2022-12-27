@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFile } from "@fortawesome/free-solid-svg-icons";
+// components
+import Icon from "src/modules/core/components/Icon";
 // interfaces
 import { FileProps } from "./File.interfaces";
 
@@ -10,7 +10,7 @@ const File: FC<FileProps> = (props) => {
   return (
     <div>
       <span>
-        <FontAwesomeIcon icon={faFile} />
+        <Icon type="file" />
       </span>
       <span> {data.name}</span>
     </div>
