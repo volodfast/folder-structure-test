@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!react-dnd|dnd-core|@react-dnd)\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -45,5 +45,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-dnd-test-backend": "^16.0.1",
+    "react-dnd-test-utils": "^16.0.1"
   }
 }

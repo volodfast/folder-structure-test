@@ -18,11 +18,12 @@ const Folder: FC<FolderProps> = (props) => {
 
   const { checkIfCanMove, moveFileOption } = useExplorer();
 
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [{ isDragging, monitorId }, drag] = useDrag(() => ({
     type: DnDTypes.FOLDER,
     item: { id: data.id },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
+      monitorId: monitor.getHandlerId() as string,
     }),
   }));
 
@@ -58,6 +59,8 @@ const Folder: FC<FolderProps> = (props) => {
         opacity: isDragging ? 0.5 : 1,
         color: isOver && canDrop ? "red" : "black",
       }}
+      data-testid="folder-element"
+      data-monitorid={monitorId}
     >
       <div onClick={() => setIsOpen((prevIsOpen) => !prevIsOpen)}>
         <span>
